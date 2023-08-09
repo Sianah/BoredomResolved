@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
-const InputActivities = ({ navigation }) => {
+const InputActivities = () => {
+    const navigation = useNavigation();
   const [activity, setActivity] = useState('');
   const [activities, setActivities] = useState([]);
 
