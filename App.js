@@ -9,7 +9,9 @@ const Stack = createStackNavigator();
 
 const App = () => {
   const [modalVisible, setModalVisible] = useState(true);
-
+  const handleCloseModal = () => {
+    setModalVisible(false);
+  };
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="DisplayActivity">
@@ -25,20 +27,12 @@ const App = () => {
           animationType="slide"
           transparent={false}
           visible={modalVisible}
-          onRequestClose={() => {
-            alert("Modal has been closed.");
-            setModalVisible(!modalVisible);
-          }}
+          onRequestClose={handleCloseModal}
         >
           <View style={{ marginTop: 22 }}>
             <View>
               <Text>Enter Your Activities</Text>
-              <InputActivities />
-
-              <Button
-                title="Close"
-                onPress={() => setModalVisible(!modalVisible)}
-              />
+              <InputActivities onClose={handleCloseModal}/>
             </View>
           </View>
         </Modal>

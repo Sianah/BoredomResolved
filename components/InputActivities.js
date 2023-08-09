@@ -3,7 +3,7 @@ import { View, TextInput, Button } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
-const InputActivities = () => {
+const InputActivities = ({ onClose }) => {
     const navigation = useNavigation();
   const [activity, setActivity] = useState('');
   const [activities, setActivities] = useState([]);
@@ -17,7 +17,10 @@ const InputActivities = () => {
     try {
       await AsyncStorage.setItem('userActivities', JSON.stringify(activities));
       navigation.navigate('DisplayActivity');
-    } catch (error) {
+      if (onClose) {
+        onClose(); // This will close the modal
+      }} 
+    catch (error) {
       console.error('Error saving activities to storage:', error);
     }
   };
