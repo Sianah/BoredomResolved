@@ -1,26 +1,34 @@
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import InputActivities from './components/InputActivities';
 import DisplayActivity from './components/DisplayActivity';
-import { View, Button, Modal, Text } from 'react-native';
+import { View, Modal, Text } from 'react-native';
 
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 const App = () => {
   const [modalVisible, setModalVisible] = useState(true);
   const handleCloseModal = () => {
     setModalVisible(false);
   };
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="DisplayActivity">
-        <Stack.Screen 
-          name="DisplayActivity" 
+      <Tab.Navigator>
+        <Tab.Screen 
+          name="Home" 
           component={DisplayActivity} 
           options={{ title: 'Activity Suggestion' }}
         />
-      </Stack.Navigator>
+        <Tab.Screen 
+          name="Add Activities" 
+          component={InputActivities} 
+          options={{ title: 'Add New Activities' }}
+        />
+      </Tab.Navigator>
 
       {modalVisible && (
         <Modal
@@ -32,7 +40,7 @@ const App = () => {
           <View style={{ marginTop: 22 }}>
             <View>
               <Text>Enter Your Activities</Text>
-              <InputActivities onClose={handleCloseModal}/>
+              <InputActivities onClose={handleCloseModal} />
             </View>
           </View>
         </Modal>
@@ -42,5 +50,6 @@ const App = () => {
 }
 
 export default App;
+
 
 

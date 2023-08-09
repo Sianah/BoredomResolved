@@ -16,7 +16,7 @@ const InputActivities = ({ onClose }) => {
   const handleSubmit = async () => {
     try {
       await AsyncStorage.setItem('userActivities', JSON.stringify(activities));
-      navigation.navigate('DisplayActivity');
+      navigation.navigate('Home');
       if (onClose) {
         onClose(); // This will close the modal
       }} 
