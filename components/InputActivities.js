@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, TextInput, Button, StyleSheet, FlatList, Text, TouchableOpacity } from 'react-native';
+import { View, TextInput, Button, StyleSheet, FlatList, Text, TouchableOpacity, Keyboard } from 'react-native';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityContext } from '../App';
 
-const InputActivities = ({ onClose}) => {
+const InputActivities = ({ onClose, navigateHome }) => {
+
     const [activity, setActivity] = useState('');
     const { activitiesList, setActivitiesList } = useContext(ActivityContext);
 
@@ -45,6 +47,20 @@ const InputActivities = ({ onClose}) => {
         }
     };
 
+    const handleSubmission = () => {
+        if (typeof onClose === 'function') {
+          onClose();
+        } else {
+          console.error('onClose is not a function');
+        }
+    
+        if (typeof navigateHome === 'function') {
+          navigateHome();
+        } else {
+          console.error('navigateHome is not a function');
+        }
+    };
+
     return (
         <View style={styles.container}>
             <TextInput 
@@ -66,7 +82,7 @@ const InputActivities = ({ onClose}) => {
                 )}
                 keyExtractor={(item, index) => index.toString()}
             />
-            <Button title="Submit" onPress={onClose} />
+            <Button title="Submit" onPress={handleSubmission} />
         </View>
     );
 };
@@ -97,6 +113,7 @@ const styles = StyleSheet.create({
 });
 
 export default InputActivities;
+
 
 
 
