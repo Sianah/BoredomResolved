@@ -21,11 +21,12 @@ const App = () => {
     <NavigationContainer>
       <ActivityContext.Provider value={{ activitiesList, setActivitiesList }}>
         <Tab.Navigator>
-          <Tab.Screen 
-            name="Home" 
-            component={DisplayActivity} 
-            options={{ title: 'Activity Suggestion' }}
-          />
+        <Tab.Screen 
+  name="Home" 
+  children={()=><DisplayActivity activitiesList={activitiesList} setActivitiesList={setActivitiesList} />}
+  options={{ title: 'Activity Suggestion' }}
+/>
+
           <Tab.Screen 
             name="Add Activities" 
             component={InputActivities} 
@@ -42,7 +43,7 @@ const App = () => {
           >
             <View style={{ marginTop: 22 }}>
               <Text>Enter Your Activities</Text>
-              <InputActivities onClose={handleCloseModal} />
+              <InputActivities onClose={handleCloseModal} setActivitiesList={setActivitiesList} />
             </View>
           </Modal>
         )}

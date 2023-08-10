@@ -3,7 +3,7 @@ import { View, TextInput, Button, StyleSheet, FlatList, Text, TouchableOpacity }
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityContext } from '../App';
 
-const InputActivities = ({ onClose }) => {
+const InputActivities = ({ onClose}) => {
     const [activity, setActivity] = useState('');
     const { activitiesList, setActivitiesList } = useContext(ActivityContext);
 

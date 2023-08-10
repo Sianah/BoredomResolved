@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
 import { View, Button, Text } from 'react-native';
-import { ActivityContext } from '../App';
 
-const DisplayActivity = () => {
-    const { activitiesList } = useContext(ActivityContext);
+
+const DisplayActivity = ({ activitiesList, setActivitiesList }) => {
+    
     const [selectedActivity, setSelectedActivity] = useState(null);
 
     const handleRandomSelection = () => {
