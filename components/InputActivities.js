@@ -1,42 +1,90 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { View, TextInput, Button, StyleSheet, FlatList, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const InputActivities = ({ onClose }) => {
+    const [activity, setActivity] = useState('');  // The current activity being typed in
+    const [activitiesList, setActivitiesList] = useState([]);  // All the added activities
+
     const navigation = useNavigation();
-  const [activity, setActivity] = useState('');
-  const [activities, setActivities] = useState([]);
+    
+    const handleAddActivity = () => {
+        if (activity) {
+            setActivitiesList([...activitiesList, activity]);
+            setActivity('');  // Clear the input field
+        }
+    };
 
-  const handleAddActivity = () => {
-    setActivities(prev => [...prev, activity]);
-    setActivity('');
-  };
+    const handleRemoveActivity = (index) => {
+        const newActivities = [...activitiesList];
+        newActivities.splice(index, 1);
+        setActivitiesList(newActivities);
+    };
 
-  const handleSubmit = async () => {
-    try {
-      await AsyncStorage.setItem('userActivities', JSON.stringify(activities));
-      navigation.navigate('Home');
-      if (onClose) {
-        onClose(); // This will close the modal
-      }} 
-    catch (error) {
-      console.error('Error saving activities to storage:', error);
-    }
-  };
-  
+    const handleActivitySubmission = () => {
+        // Here, you'd typically save or process the activities.
+        // For simplicity, we're just setting the state and moving on.
 
-  return (
-    <View>
-      <TextInput
-        value={activity}
-        placeholder="Enter an activity"
-        onChangeText={text => setActivity(text)}
-      />
-      <Button title="Add Activity" onPress={handleAddActivity} />
-      <Button title="Submit" onPress={handleSubmit} />
-    </View>
-  );
+        onClose();  // Close the modal if it's open from the app component
+
+        navigation.navigate('Home');
+    };
+
+    return (
+        <View style={styles.container}>
+            <TextInput 
+                style={styles.input} 
+                value={activity} 
+                onChangeText={setActivity} 
+                placeholder="Enter an activity" 
+            />
+            <Button title="Add Activity" onPress={handleAddActivity} />
+
+            <FlatList 
+                data={activitiesList}
+                renderItem={({ item, index }) => (
+                    <View style={styles.activityItem}>
+                        <Text>{item}</Text>
+                        <TouchableOpacity onPress={() => handleRemoveActivity(index)}>
+                            <Text style={styles.removeBtn}>X</Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
+                keyExtractor={(item, index) => index.toString()}
+            />
+
+            <Button title="Submit" onPress={handleActivitySubmission} />
+        </View>
+    );
 };
 
+const styles = StyleSheet.create({
+    container: {
+        padding: 15
+    },
+    input: {
+        padding: 10,
+        borderColor: 'gray',
+        borderWidth: 1,
+        marginBottom: 10
+    },
+    activityItem: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 10,
+        backgroundColor: '#e5e5e5',
+        borderRadius: 20,
+        marginTop: 10
+    },
+    removeBtn: {
+        color: 'red',
+        fontSize: 18
+    }
+});
+
 export default InputActivities;
+
+
+
+
