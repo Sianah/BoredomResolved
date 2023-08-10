@@ -3,10 +3,9 @@ import { View, TextInput, Button, StyleSheet, FlatList, Text, TouchableOpacity }
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const InputActivities = ({ onClose }) => {
+const InputActivities = ({ onClose, setActivitiesList }) => {
     const [activity, setActivity] = useState('');  
     const navigation = useNavigation();
-    const [activitiesList, setActivitiesList] = useState([]);
 
     useEffect(() => {
         const loadActivities = async () => {
@@ -14,8 +13,6 @@ const InputActivities = ({ onClose }) => {
                 const storedActivities = await AsyncStorage.getItem('activities');
                 if (storedActivities) {
                     setActivitiesList(JSON.parse(storedActivities));
-                } else {
-                    setActivitiesList([]);
                 }
             } catch (error) {
                 console.error("Failed to load activities", error);
@@ -35,7 +32,7 @@ const InputActivities = ({ onClose }) => {
     const handleAddActivity = () => {
         if (activity) {
             const newActivitiesList = [...activitiesList, activity];
-            setActivitiesList(newActivitiesList);
+            setActivitiesList(prevActivities => [...prevActivities, activity]);
             setActivity('');
             storeActivities(newActivitiesList);
         }
@@ -64,6 +61,7 @@ const InputActivities = ({ onClose }) => {
                 placeholder="Enter an activity" 
             />
             <Button title="Add Activity" onPress={handleAddActivity} />
+
             <FlatList 
                 data={activitiesList}
                 renderItem={({ item, index }) => (
@@ -76,6 +74,7 @@ const InputActivities = ({ onClose }) => {
                 )}
                 keyExtractor={(item, index) => index.toString()}
             />
+
             <Button title="Submit" onPress={handleActivitySubmission} />
         </View>
     );
@@ -107,6 +106,7 @@ const styles = StyleSheet.create({
 });
 
 export default InputActivities;
+
 
 
 

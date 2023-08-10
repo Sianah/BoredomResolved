@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, createContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import InputActivities from './components/InputActivities';
 import DisplayActivity from './components/DisplayActivity';
 import { View, Modal, Text } from 'react-native';
-import ActivityContext from './ActivityContext';  // <-- Import from the new file
 
 const Tab = createBottomTabNavigator();
+
+// Define the context
+export const ActivityContext = createContext();
 
 const App = () => {
   const [modalVisible, setModalVisible] = useState(true);
@@ -51,6 +53,7 @@ const App = () => {
 }
 
 export default App;
+
 
 
 
