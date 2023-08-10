@@ -5,16 +5,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const InputActivities = ({ onClose }) => {
     const [activity, setActivity] = useState('');  
-    const [activitiesList, setActivitiesList] = useState([]);  
     const navigation = useNavigation();
+    const [activitiesList, setActivitiesList] = useState([]);
 
-    // Load activities from AsyncStorage when the component mounts
     useEffect(() => {
         const loadActivities = async () => {
             try {
                 const storedActivities = await AsyncStorage.getItem('activities');
                 if (storedActivities) {
                     setActivitiesList(JSON.parse(storedActivities));
+                } else {
+                    setActivitiesList([]);
                 }
             } catch (error) {
                 console.error("Failed to load activities", error);
@@ -48,7 +49,6 @@ const InputActivities = ({ onClose }) => {
     };
 
     const handleActivitySubmission = () => {
-        // Close the modal if it's open from the app component
         if(onClose) {
             onClose(); 
         }
@@ -64,7 +64,6 @@ const InputActivities = ({ onClose }) => {
                 placeholder="Enter an activity" 
             />
             <Button title="Add Activity" onPress={handleAddActivity} />
-
             <FlatList 
                 data={activitiesList}
                 renderItem={({ item, index }) => (
@@ -77,7 +76,6 @@ const InputActivities = ({ onClose }) => {
                 )}
                 keyExtractor={(item, index) => index.toString()}
             />
-
             <Button title="Submit" onPress={handleActivitySubmission} />
         </View>
     );
@@ -109,6 +107,7 @@ const styles = StyleSheet.create({
 });
 
 export default InputActivities;
+
 
 
 
