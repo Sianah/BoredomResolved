@@ -1,17 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TextInput, Button, StyleSheet, FlatList, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const InputActivities = ({ onClose }) => {
-    const [activity, setActivity] = useState('');  // The current activity being typed in
-    const [activitiesList, setActivitiesList] = useState([]);  // All the added activities
-
+    const [activity, setActivity] = useState('');  
+    const [activitiesList, setActivitiesList] = useState([]);  
     const navigation = useNavigation();
-    
+
+    // Load activities from AsyncStorage when the component mounts
+    useEffect(() => {
+        const loadActivities = async () => {
+            try {
+                const storedActivities = await AsyncStorage.getItem('activities');
+                if (storedActivities) {
+                    setActivitiesList(JSON.parse(storedActivities));
+                }
+            } catch (error) {
+                console.error("Failed to load activities", error);
+            }
+        };
+        loadActivities();
+    }, []);
+
+    const storeActivities = async (activities) => {
+        try {
+            await AsyncStorage.setItem('activities', JSON.stringify(activities));
+        } catch (error) {
+            console.error("Failed to save activities", error);
+        }
+    }
+
     const handleAddActivity = () => {
         if (activity) {
-            setActivitiesList([...activitiesList, activity]);
-            setActivity('');  // Clear the input field
+            const newActivitiesList = [...activitiesList, activity];
+            setActivitiesList(newActivitiesList);
+            setActivity('');
+            storeActivities(newActivitiesList);
         }
     };
 
@@ -19,14 +44,14 @@ const InputActivities = ({ onClose }) => {
         const newActivities = [...activitiesList];
         newActivities.splice(index, 1);
         setActivitiesList(newActivities);
+        storeActivities(newActivities);
     };
 
     const handleActivitySubmission = () => {
-        // Here, you'd typically save or process the activities.
-        // For simplicity, we're just setting the state and moving on.
-
-        onClose();  // Close the modal if it's open from the app component
-
+        // Close the modal if it's open from the app component
+        if(onClose) {
+            onClose(); 
+        }
         navigation.navigate('Home');
     };
 
@@ -84,6 +109,7 @@ const styles = StyleSheet.create({
 });
 
 export default InputActivities;
+
 
 
 
