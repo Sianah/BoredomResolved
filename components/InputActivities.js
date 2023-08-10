@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, TextInput, Button, StyleSheet, FlatList, Text, TouchableOpacity, Keyboard } from 'react-native';
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';  // Make sure to import this
 import { ActivityContext } from '../App';
 
-const InputActivities = ({ onClose, navigateHome }) => {
-
+const InputActivities = ({ onClose }) => {
     const [activity, setActivity] = useState('');
     const { activitiesList, setActivitiesList } = useContext(ActivityContext);
+    const navigation = useNavigation();  // Use this hook
 
     useEffect(() => {
         const loadActivities = async () => {
@@ -29,6 +29,7 @@ const InputActivities = ({ onClose, navigateHome }) => {
             setActivitiesList(newActivitiesList);
             setActivity('');
             storeActivities(newActivitiesList);
+            Keyboard.dismiss();
         }
     };
 
@@ -49,16 +50,9 @@ const InputActivities = ({ onClose, navigateHome }) => {
 
     const handleSubmission = () => {
         if (typeof onClose === 'function') {
-          onClose();
-        } else {
-          console.error('onClose is not a function');
+            onClose();
         }
-    
-        if (typeof navigateHome === 'function') {
-          navigateHome();
-        } else {
-          console.error('navigateHome is not a function');
-        }
+        navigation.navigate('Home');
     };
 
     return (
@@ -87,6 +81,7 @@ const InputActivities = ({ onClose, navigateHome }) => {
     );
 };
 
+
 const styles = StyleSheet.create({
     container: {
         padding: 15
@@ -113,6 +108,7 @@ const styles = StyleSheet.create({
 });
 
 export default InputActivities;
+
 
 
 

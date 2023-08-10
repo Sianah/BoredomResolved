@@ -12,18 +12,13 @@ const Tab = createBottomTabNavigator();
 const App = () => {
   const [modalVisible, setModalVisible] = useState(true);
   const [activitiesList, setActivitiesList] = useState([]);
-  const navigationRef = useRef(null);  // Define the navigation ref
 
   const handleCloseModal = () => {
     setModalVisible(false);
   };
 
-  const navigateHome = () => {
-    navigationRef.current?.navigate('Home');
-  };
-
   return (
-    <NavigationContainer ref={navigationRef}>
+    <NavigationContainer>
       <ActivityContext.Provider value={{ activitiesList, setActivitiesList }}>
         <Tab.Navigator>
           <Tab.Screen 
@@ -42,7 +37,7 @@ const App = () => {
                     >
                       <View style={{ marginTop: 22 }}>
                         <Text>Enter Your Activities</Text>
-                        <InputActivities onClose={handleCloseModal} navigateHome={navigateHome} />
+                        <InputActivities onClose={handleCloseModal} />
                       </View>
                     </Modal>
                   )}
@@ -63,5 +58,7 @@ const App = () => {
 }
 
 export default App;
+
+
 
 
