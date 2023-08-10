@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, TextInput, Button, StyleSheet, FlatList, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ActivityContext } from '../App';
 
-const InputActivities = ({ onClose, setActivitiesList }) => {
-    const [activity, setActivity] = useState('');  
+const InputActivities = ({ onClose }) => {
+    const [activity, setActivity] = useState('');
+    const { activities, setActivities } = useContext(ActivityContext);
     const navigation = useNavigation();
 
     useEffect(() => {
@@ -12,36 +14,28 @@ const InputActivities = ({ onClose, setActivitiesList }) => {
             try {
                 const storedActivities = await AsyncStorage.getItem('activities');
                 if (storedActivities) {
-                    setActivitiesList(JSON.parse(storedActivities));
+                    setActivities(JSON.parse(storedActivities));
                 }
             } catch (error) {
                 console.error("Failed to load activities", error);
             }
         };
         loadActivities();
-    }, []);
-
-    const storeActivities = async (activities) => {
-        try {
-            await AsyncStorage.setItem('activities', JSON.stringify(activities));
-        } catch (error) {
-            console.error("Failed to save activities", error);
-        }
-    }
+    }, [setActivities]);
 
     const handleAddActivity = () => {
         if (activity) {
-            const newActivitiesList = [...activitiesList, activity];
-            setActivitiesList(prevActivities => [...prevActivities, activity]);
+            const newActivitiesList = [...activities, activity];
+            setActivities(newActivitiesList);
             setActivity('');
             storeActivities(newActivitiesList);
         }
     };
 
     const handleRemoveActivity = (index) => {
-        const newActivities = [...activitiesList];
+        const newActivities = [...activities];
         newActivities.splice(index, 1);
-        setActivitiesList(newActivities);
+        setActivities(newActivities);
         storeActivities(newActivities);
     };
 
@@ -61,9 +55,8 @@ const InputActivities = ({ onClose, setActivitiesList }) => {
                 placeholder="Enter an activity" 
             />
             <Button title="Add Activity" onPress={handleAddActivity} />
-
             <FlatList 
-                data={activitiesList}
+                data={activities}
                 renderItem={({ item, index }) => (
                     <View style={styles.activityItem}>
                         <Text>{item}</Text>
@@ -74,7 +67,6 @@ const InputActivities = ({ onClose, setActivitiesList }) => {
                 )}
                 keyExtractor={(item, index) => index.toString()}
             />
-
             <Button title="Submit" onPress={handleActivitySubmission} />
         </View>
     );
@@ -106,6 +98,7 @@ const styles = StyleSheet.create({
 });
 
 export default InputActivities;
+
 
 
 

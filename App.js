@@ -7,7 +7,6 @@ import { View, Modal, Text } from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
-// Define the context
 export const ActivityContext = createContext();
 
 const App = () => {
@@ -20,7 +19,7 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <ActivityContext.Provider value={activitiesList}>
+      <ActivityContext.Provider value={{ activities: activitiesList, setActivities: setActivitiesList }}>
         <Tab.Navigator>
           <Tab.Screen 
             name="Home" 
@@ -43,7 +42,7 @@ const App = () => {
           >
             <View style={{ marginTop: 22 }}>
               <Text>Enter Your Activities</Text>
-              <InputActivities onClose={handleCloseModal} setActivitiesList={setActivitiesList} />
+              <InputActivities onClose={handleCloseModal} />
             </View>
           </Modal>
         )}
@@ -53,6 +52,8 @@ const App = () => {
 }
 
 export default App;
+
+
 
 
 
