@@ -1,10 +1,10 @@
 {
   "expo": {
     "name": "BoredomResolved",
-    "slug": "BoredomResolved",
+    "slug": "boredomresolved",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/funIcon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -21,10 +21,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.itsasma11world.boredomresolved"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "608cbb3c-dbb6-4e49-9fe1-91fb6387f9c1"
+      }
+    },
+    "owner": "itsasma11world"
   }
 }

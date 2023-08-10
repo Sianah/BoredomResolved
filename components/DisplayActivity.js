@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { ImageBackground, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 const DisplayActivity = ({ activitiesList }) => {
     const [selectedActivity, setSelectedActivity] = useState(null);
@@ -12,6 +12,7 @@ const DisplayActivity = ({ activitiesList }) => {
     };
 
     return (
+        <ImageBackground source={require('./field.jpg')} style={styles.backgroundImage}>
         <View style={styles.container}>
             <View style={styles.box}>
                 <TouchableOpacity style={styles.button} onPress={handleRandomSelection}>
@@ -24,6 +25,7 @@ const DisplayActivity = ({ activitiesList }) => {
                 )}
             </View>
         </View>
+        </ImageBackground>
     );
     
 }
@@ -34,7 +36,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
-        backgroundColor: '#F6F6F9',
+        backgroundColor: 'rgba(246,246,249,0.4)',
     },
     instructionText: {
         fontSize: 18,
@@ -72,6 +74,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         width: '100%'
     },
+    backgroundImage: {
+        flex: 1,
+        resizeMode: "cover", // cover or contain depending on how you want to display the image
+        justifyContent: "center"
+      }
     
 });
 
