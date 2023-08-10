@@ -5,9 +5,9 @@ import InputActivities from './components/InputActivities';
 import DisplayActivity from './components/DisplayActivity';
 import { View, Modal, Text } from 'react-native';
 
-const Tab = createBottomTabNavigator();
-
 export const ActivityContext = createContext();
+
+const Tab = createBottomTabNavigator();
 
 const App = () => {
   const [modalVisible, setModalVisible] = useState(true);
@@ -19,7 +19,7 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <ActivityContext.Provider value={{ activities: activitiesList, setActivities: setActivitiesList }}>
+      <ActivityContext.Provider value={{ activitiesList, setActivitiesList }}>
         <Tab.Navigator>
           <Tab.Screen 
             name="Home" 
@@ -52,13 +52,3 @@ const App = () => {
 }
 
 export default App;
-
-
-
-
-
-
-
-
-
-

@@ -1,49 +1,48 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, TextInput, Button, StyleSheet, FlatList, Text, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityContext } from '../App';
 
 const InputActivities = ({ onClose }) => {
     const [activity, setActivity] = useState('');
-    const { activities, setActivities } = useContext(ActivityContext);
-    const navigation = useNavigation();
+    const { activitiesList, setActivitiesList } = useContext(ActivityContext);
 
     useEffect(() => {
         const loadActivities = async () => {
             try {
                 const storedActivities = await AsyncStorage.getItem('activities');
                 if (storedActivities) {
-                    setActivities(JSON.parse(storedActivities));
+                    setActivitiesList(JSON.parse(storedActivities));
                 }
             } catch (error) {
                 console.error("Failed to load activities", error);
             }
         };
         loadActivities();
-    }, [setActivities]);
+    }, [setActivitiesList]);
 
     const handleAddActivity = () => {
         if (activity) {
-            const newActivitiesList = [...activities, activity];
-            setActivities(newActivitiesList);
+            const newActivitiesList = [...activitiesList, activity];
+            setActivitiesList(newActivitiesList);
             setActivity('');
             storeActivities(newActivitiesList);
         }
     };
 
     const handleRemoveActivity = (index) => {
-        const newActivities = [...activities];
+        const newActivities = [...activitiesList];
         newActivities.splice(index, 1);
-        setActivities(newActivities);
+        setActivitiesList(newActivities);
         storeActivities(newActivities);
     };
 
-    const handleActivitySubmission = () => {
-        if(onClose) {
-            onClose(); 
+    const storeActivities = async (activities) => {
+        try {
+            await AsyncStorage.setItem('activities', JSON.stringify(activities));
+        } catch (error) {
+            console.error("Failed to save activities", error);
         }
-        navigation.navigate('Home');
     };
 
     return (
@@ -56,7 +55,7 @@ const InputActivities = ({ onClose }) => {
             />
             <Button title="Add Activity" onPress={handleAddActivity} />
             <FlatList 
-                data={activities}
+                data={activitiesList}
                 renderItem={({ item, index }) => (
                     <View style={styles.activityItem}>
                         <Text>{item}</Text>
@@ -67,7 +66,7 @@ const InputActivities = ({ onClose }) => {
                 )}
                 keyExtractor={(item, index) => index.toString()}
             />
-            <Button title="Submit" onPress={handleActivitySubmission} />
+            <Button title="Submit" onPress={onClose} />
         </View>
     );
 };

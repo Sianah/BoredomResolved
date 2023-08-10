@@ -3,13 +3,13 @@ import { View, Button, Text } from 'react-native';
 import { ActivityContext } from '../App';
 
 const DisplayActivity = () => {
-    const { activities } = useContext(ActivityContext);
+    const { activitiesList } = useContext(ActivityContext);
     const [selectedActivity, setSelectedActivity] = useState(null);
 
     const handleRandomSelection = () => {
-        if (activities && activities.length) {
-            const randomIndex = Math.floor(Math.random() * activities.length);
-            setSelectedActivity(activities[randomIndex]);
+        if (activitiesList && activitiesList.length) {
+            const randomIndex = Math.floor(Math.random() * activitiesList.length);
+            setSelectedActivity(activitiesList[randomIndex]);
         }
     };
 
@@ -22,6 +22,8 @@ const DisplayActivity = () => {
 }
 
 export default DisplayActivity;
+
+
 
 
 
